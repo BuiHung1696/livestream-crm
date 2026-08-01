@@ -9,6 +9,7 @@ RUN npm install
 
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_OPTIONS "--max-old-space-size=2048"
 RUN npm run build
 
 # Production image, copy all files and run next
