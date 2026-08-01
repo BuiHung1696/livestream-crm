@@ -1,0 +1,18 @@
+{
+  "/(dashboard)/brands/[id]/page": "/brands/[id]",
+  "/(dashboard)/brands/page": "/brands",
+  "/(dashboard)/campaigns/[id]/page": "/campaigns/[id]",
+  "/(dashboard)/campaigns/page": "/campaigns",
+  "/(dashboard)/chat/page": "/chat",
+  "/(dashboard)/page": "/",
+  "/(dashboard)/reports/page": "/reports",
+  "/(dashboard)/schedule/page": "/schedule",
+  "/(dashboard)/settings/page": "/settings",
+  "/(dashboard)/talents/[id]/page": "/talents/[id]",
+  "/(dashboard)/talents/page": "/talents",
+  "/(dashboard)/tasks/page": "/tasks",
+  "/(dashboard)/users/page": "/users",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/login/page": "/login"
+}

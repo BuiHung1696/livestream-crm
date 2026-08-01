@@ -1,0 +1,3 @@
+module.exports=[12426,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(45664);a.n(d("[project]/livestream-crm/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},96719,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(45664);a.n(d("[project]/livestream-crm/node_modules/next/dist/client/components/builtin/global-error.js"))},93822,a=>{"use strict";a.i(12426);var b=a.i(96719);a.n(b)},12296,a=>{a.n(a.i(93822))}];
+
+//# sourceMappingURL=0qmd_next_dist_client_components_builtin_global-error_0n1dqsb.js.map

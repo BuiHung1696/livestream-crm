@@ -1,0 +1,18 @@
+{
+  "/(dashboard)/brands/[id]/page": "app/(dashboard)/brands/[id]/page.js",
+  "/(dashboard)/brands/page": "app/(dashboard)/brands/page.js",
+  "/(dashboard)/campaigns/[id]/page": "app/(dashboard)/campaigns/[id]/page.js",
+  "/(dashboard)/campaigns/page": "app/(dashboard)/campaigns/page.js",
+  "/(dashboard)/chat/page": "app/(dashboard)/chat/page.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js",
+  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js",
+  "/(dashboard)/schedule/page": "app/(dashboard)/schedule/page.js",
+  "/(dashboard)/settings/page": "app/(dashboard)/settings/page.js",
+  "/(dashboard)/talents/[id]/page": "app/(dashboard)/talents/[id]/page.js",
+  "/(dashboard)/talents/page": "app/(dashboard)/talents/page.js",
+  "/(dashboard)/tasks/page": "app/(dashboard)/tasks/page.js",
+  "/(dashboard)/users/page": "app/(dashboard)/users/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/login/page": "app/login/page.js"
+}

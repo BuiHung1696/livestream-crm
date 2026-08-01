@@ -6,9 +6,9 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
+# next.js cache
+/.next/cache
+/.next/dev
 
 # production
 /build
@@ -27,7 +27,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
 
 # OS
 .DS_Store

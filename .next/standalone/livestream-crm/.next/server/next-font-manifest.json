@@ -1,0 +1,67 @@
+{
+  "app": {
+    "[project]/livestream-crm/src/app/(dashboard)/brands/[id]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/brands/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/campaigns/[id]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/campaigns/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/chat/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/reports/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/schedule/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/settings/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/talents/[id]/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/talents/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/tasks/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/(dashboard)/users/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/_not-found/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/livestream-crm/src/app/login/page": [
+      "static/media/2bbe8d2671613f1f-s.p.0k62hbripvv8p.woff2",
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
