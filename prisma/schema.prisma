@@ -1,0 +1,217 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum TalentType {
+  HOST
+  KOC
+  KOL
+  HYBRID
+}
+
+enum TalentStatus {
+  AVAILABLE
+  BUSY
+  ON_LEAVE
+  BLACK_LIST
+}
+
+enum SessionType {
+  LIVESTREAM
+  VIDEO_REVIEW
+  EVENT_ATTENDANCE
+}
+
+enum PlatformType {
+  TIKTOK_LIVE
+  SHOPEE_LIVE
+  FACEBOOK_LIVE
+  YOUTUBE_LIVE
+  INSTAGRAM
+}
+
+enum ShiftStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum SampleStatus {
+  PENDING_DISPATCH
+  SHIPPED
+  DELIVERED
+  REVIEWED
+}
+
+enum BrandContractStatus {
+  PROSPECT
+  ACTIVE
+  PAUSED
+  EXPIRED
+}
+
+model Talent {
+  id                  String         @id @default(uuid())
+  fullName            String
+  stageName           String
+  talentType          TalentType     @default(HOST)
+  phone               String
+  email               String?
+  zalo                String?
+  address             String?
+  avatarUrl           String?
+  categories          String[]       // e.g. ["Fashion", "Cosmetics", "Tech"]
+  tags                String[]       // e.g. ["Fast Closer", "Humorous", "Fluent English"]
+  channels            Json           // TikTok stats, Shopee stats, Fanpage stats
+  internalRating      Float          @default(5.0)
+  avgGmvPerHour       Float          @default(0)
+  avgViewsPerVideo    Int            @default(0)
+  fixedRatePerShift   Float          @default(0)
+  videoRate           Float          @default(0)
+  affiliateCommission Float          @default(0)
+  exclusivityBrands   String[]       // List of restricted competitor brands
+  bankAccountInfo     Json?          // Bank name, account number, account holder
+  taxCode             String?
+  status              TalentStatus   @default(AVAILABLE)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  shifts              BookingShift[]
+  samples             KocSample[]
+
+  @@map("talents")
+}
+
+model Brand {
+  id             String              @id @default(uuid())
+  brandName      String
+  companyName    String?
+  taxCode        String?
+  industry       String
+  contactPerson  String
+  contactPhone   String
+  contactEmail   String
+  logoUrl        String?
+  contractStatus BrandContractStatus @default(ACTIVE)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  skus           BrandSku[]
+  campaigns      BookingCampaign[]
+
+  @@map("brands")
+}
+
+model BrandSku {
+  id              String   @id @default(uuid())
+  brandId         String
+  skuCode         String   @unique
+  productName     String
+  category        String
+  originalPrice   Float
+  livePromoPrice  Float
+  commissionRate  Float    // percentage e.g. 15.0 for 15%
+  keyUsp          String?  // Main Selling Points for Hosts/KOCs
+  sampleStock     Int      @default(0)
+  imageUrl        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  brand           Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  shiftSkus       ShiftSku[]
+  samples         KocSample[]
+
+  @@map("brand_skus")
+}
+
+model BookingCampaign {
+  id           String   @id @default(uuid())
+  brandId      String
+  campaignName String
+  budget       Float
+  targetGmv    Float
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  brand        Brand          @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  shifts       BookingShift[]
+
+  @@map("booking_campaigns")
+}
+
+model BookingShift {
+  id             String       @id @default(uuid())
+  campaignId     String
+  talentId       String
+  sessionType    SessionType  @default(LIVESTREAM)
+  platform       PlatformType @default(TIKTOK_LIVE)
+  location       String       @default("Studio A")
+  startTime      DateTime
+  endTime        DateTime
+  shiftStatus    ShiftStatus  @default(SCHEDULED)
+  actualGmv      Float        @default(0)
+  actualViews    Int          @default(0)
+  peakConcurrent Int          @default(0)
+  scriptNotes    String?
+  voucherCode    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  campaign       BookingCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  talent         Talent          @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  shiftSkus      ShiftSku[]
+
+  @@map("booking_shifts")
+}
+
+model ShiftSku {
+  id           String       @id @default(uuid())
+  shiftId      String
+  skuId        String
+  featuredRank Int          @default(1)
+  discountNote String?
+
+  shift        BookingShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  sku          BrandSku     @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@map("shift_skus")
+}
+
+model KocSample {
+  id             String       @id @default(uuid())
+  talentId       String
+  skuId          String
+  trackingCode   String?
+  courierName    String?      // GHN, GHTK, Viettel Post
+  dispatchDate   DateTime?
+  receivedDate   DateTime?
+  status         SampleStatus @default(PENDING_DISPATCH)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  talent         Talent       @relation(fields: [talentId], references: [id], onDelete: Cascade)
+  sku            BrandSku     @relation(fields: [skuId], references: [id], onDelete: Cascade)
+
+  @@map("koc_samples")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  role      String   @default("ADMIN") // ADMIN, ACCOUNT_MANAGER, COORDINATOR
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
