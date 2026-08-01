@@ -364,8 +364,8 @@ export function Header({ title }: { title: string }) {
                   onClick={() => setIsUserMenuOpen(false)}
                   className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
                 >
-                  <Settings className="w-3.5 h-3.5 text-slate-400" />
-                  Cấu Hình Tài Khoản
+                  <User className="w-3.5 h-3.5 text-indigo-600" />
+                  Hồ Sơ Cá Nhân & Đổi Mật Khẩu
                 </Link>
                 {currentUser?.role === "ADMIN" && (
                   <Link

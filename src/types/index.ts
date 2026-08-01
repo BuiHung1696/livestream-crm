@@ -39,6 +39,8 @@ export interface UserAccount {
   id: string;
   fullName: string;
   email: string;
+  phone?: string;
+  password?: string;
   avatarUrl?: string;
   role: UserRole;
   department: string;

@@ -20,6 +20,9 @@ import {
   Users,
   Shield,
   PhoneCall,
+  Eye,
+  EyeOff,
+  Key,
 } from "lucide-react";
 
 export default function UsersPage() {
@@ -34,6 +37,7 @@ export default function UsersPage() {
 
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<UserAccount | null>(null);
+  const [showModalPassword, setShowModalPassword] = useState(false);
 
   if (!hasPermission) {
     return (
@@ -52,6 +56,7 @@ export default function UsersPage() {
   const [userForm, setUserForm] = useState({
     fullName: "",
     email: "",
+    password: "123456",
     department: "Phòng Booking & Điều Phối Host",
     role: "COORDINATOR" as UserRole,
     status: "ACTIVE" as "ACTIVE" | "INACTIVE",
@@ -79,6 +84,7 @@ export default function UsersPage() {
     setUserForm({
       fullName: "",
       email: "",
+      password: "123456",
       department: "Phòng Booking & Điều Phối Host",
       role: "COORDINATOR",
       status: "ACTIVE",
@@ -100,6 +106,7 @@ export default function UsersPage() {
     setUserForm({
       fullName: user.fullName || "",
       email: user.email || "",
+      password: user.password || "123456",
       department: user.department || "",
       role: user.role || "COORDINATOR",
       status: user.status || "ACTIVE",
@@ -123,6 +130,7 @@ export default function UsersPage() {
       updateUser(editingUser.id, {
         fullName: userForm.fullName,
         email: userForm.email,
+        password: userForm.password,
         department: userForm.department,
         role: userForm.role,
         status: userForm.status,
@@ -132,13 +140,14 @@ export default function UsersPage() {
       setEditingUser(null);
       setNotification({
         type: "success",
-        title: "Cập Nhật Quyền Hạn Thành Công",
-        message: `Đã lưu các chỉnh sửa quyền hạn cho nhân viên ${userForm.fullName}.`,
+        title: "Cập Nhật Tài Khoản Thành Công",
+        message: `Đã lưu các chỉnh sửa thông tin & mật khẩu cho nhân viên ${userForm.fullName}.`,
       });
     } else {
       addUser({
         fullName: userForm.fullName,
         email: userForm.email,
+        password: userForm.password || "123456",
         avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
         department: userForm.department,
         role: userForm.role,
@@ -150,7 +159,7 @@ export default function UsersPage() {
       setNotification({
         type: "success",
         title: "Tạo Tài Khoản Nhân Viên Mới Thành Công",
-        message: `Đã tạo tài khoản cho nhân viên ${userForm.fullName} (${userForm.email}) với vai trò ${userForm.role}.`,
+        message: `Đã tạo tài khoản cho nhân viên ${userForm.fullName} (${userForm.email}) với mật khẩu đã thiết lập.`,
       });
     }
   };
@@ -317,6 +326,7 @@ export default function UsersPage() {
                 <TableHead className="whitespace-nowrap">Vai Trò</TableHead>
                 <TableHead className="whitespace-nowrap">Phòng Ban</TableHead>
                 <TableHead className="whitespace-nowrap">Quyền Hạn Chi Tiết</TableHead>
+                <TableHead className="text-center whitespace-nowrap">Mật Khẩu</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Trạng Thái</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Thao Tác</TableHead>
               </TableRow>
@@ -401,6 +411,14 @@ export default function UsersPage() {
                         <span className="px-2 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">Phân quyền</span>
                       )}
                     </div>
+                  </TableCell>
+
+                  {/* Password Column */}
+                  <TableCell className="text-center whitespace-nowrap">
+                    <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold text-[11px] inline-flex items-center gap-1 border border-slate-200 dark:border-slate-700">
+                      <Lock className="w-3 h-3 text-slate-400" />
+                      {user.password || "123456"}
+                    </span>
                   </TableCell>
 
                   <TableCell className="text-center whitespace-nowrap">
@@ -514,16 +532,41 @@ export default function UsersPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Trạng Thái Tài Khoản</label>
-                <select
-                  value={userForm.status}
-                  onChange={(e) => setUserForm({ ...userForm, status: e.target.value as "ACTIVE" | "INACTIVE" })}
-                  className="w-full h-9 px-3 text-xs rounded-md border border-slate-300 bg-white dark:bg-slate-900"
-                >
-                  <option value="ACTIVE">Hoạt Động (Cho phép đăng nhập)</option>
-                  <option value="INACTIVE">Tạm Khóa (Vô hiệu hóa)</option>
-                </select>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">
+                    {editingUser ? "Mật Khẩu Mới (Đặt lại nếu cần)" : "Mật Khẩu Khởi Tạo *"}
+                  </label>
+                  <div className="relative">
+                    <Input
+                      type={showModalPassword ? "text" : "password"}
+                      required={!editingUser}
+                      placeholder="Nhập mật khẩu (VD: 123456)"
+                      value={userForm.password || ""}
+                      onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
+                      className="pr-9 font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowModalPassword(!showModalPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                    >
+                      {showModalPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">Trạng Thái Tài Khoản</label>
+                  <select
+                    value={userForm.status}
+                    onChange={(e) => setUserForm({ ...userForm, status: e.target.value as "ACTIVE" | "INACTIVE" })}
+                    className="w-full h-9 px-3 text-xs rounded-md border border-slate-300 bg-white dark:bg-slate-900 font-semibold"
+                  >
+                    <option value="ACTIVE">Hoạt Động (Cho phép đăng nhập)</option>
+                    <option value="INACTIVE">Tạm Khóa (Vô hiệu hóa)</option>
+                  </select>
+                </div>
               </div>
 
               {/* Fine-Grained Permissions Checkboxes */}
