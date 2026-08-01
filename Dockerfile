@@ -4,8 +4,8 @@ FROM node:20-alpine AS base
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json ./
+RUN npm install
 
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
