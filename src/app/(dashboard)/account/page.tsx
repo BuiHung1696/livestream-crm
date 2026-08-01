@@ -19,6 +19,7 @@ import {
   Building2,
   Shield,
   UserCheck,
+  Upload,
 } from "lucide-react";
 
 export default function AccountPage() {
@@ -34,6 +35,29 @@ export default function AccountPage() {
     avatarUrl: currentUser?.avatarUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80",
     department: currentUser?.department || "Ban Giám Đốc",
   });
+
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setNotification({
+        type: "warning",
+        title: "File Dung Lượng Quá Lớn",
+        message: "Vui lòng chọn ảnh dung lượng dưới 5MB.",
+      });
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        setProfileForm((prev) => ({ ...prev, avatarUrl: dataUrl }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Password Form State
   const [passwordForm, setPasswordForm] = useState({
@@ -167,24 +191,47 @@ export default function AccountPage() {
               <CardDescription>Cập nhật ảnh đại diện, họ tên hiển thị và thông tin liên hệ của bạn</CardDescription>
             </CardHeader>
             <CardContent className="space-y-5 text-xs">
-              {/* Avatar Preview */}
+              {/* Avatar Upload Control */}
               <div className="flex items-center gap-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <Avatar className="w-16 h-16 border-2 border-indigo-500 shadow-md">
-                  <AvatarImage src={profileForm.avatarUrl} alt={profileForm.fullName} />
-                  <AvatarFallback className="bg-indigo-600 text-white font-bold text-lg">
+                <Avatar className="w-20 h-20 border-2 border-indigo-500 shadow-md shrink-0">
+                  <AvatarImage src={profileForm.avatarUrl} alt={profileForm.fullName} className="object-cover" />
+                  <AvatarFallback className="bg-indigo-600 text-white font-bold text-xl">
                     {profileForm.fullName.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
 
-                <div className="flex-1 space-y-1">
-                  <label className="font-bold text-slate-700 dark:text-slate-300 block">Đường Dẫn Ảnh Đại Diện (Avatar URL)</label>
-                  <Input
-                    placeholder="https://images.unsplash.com/..."
-                    value={profileForm.avatarUrl}
-                    onChange={(e) => setProfileForm({ ...profileForm, avatarUrl: e.target.value })}
-                    className="h-9 text-xs font-mono"
-                  />
-                  <p className="text-[10px] text-slate-400">Hỗ trợ đường dẫn ảnh HTTPS công khai từ Unsplash, Imgur hoặc Drive</p>
+                <div className="flex-1 space-y-2">
+                  <div>
+                    <label className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">
+                      Tải Ảnh Đại Diện Từ Máy Tính
+                    </label>
+                    <p className="text-[11px] text-slate-500">
+                      Chọn tệp ảnh từ thiết bị của bạn (Định dạng JPG, PNG, WEBP, tối đa 5MB)
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <label className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg cursor-pointer shadow-xs transition-colors">
+                      <Upload className="w-4 h-4" />
+                      Chọn Ảnh Từ Máy Tính...
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleAvatarFileChange}
+                      />
+                    </label>
+
+                    {profileForm.avatarUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setProfileForm({ ...profileForm, avatarUrl: "" })}
+                        className="text-xs text-red-600 hover:text-red-700 font-semibold underline"
+                      >
+                        Xóa ảnh
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 

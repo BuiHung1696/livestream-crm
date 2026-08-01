@@ -23,6 +23,7 @@ import {
   Eye,
   EyeOff,
   Key,
+  Upload,
 } from "lucide-react";
 
 export default function UsersPage() {
@@ -57,6 +58,7 @@ export default function UsersPage() {
     fullName: "",
     email: "",
     password: "123456",
+    avatarUrl: "",
     department: "Phòng Booking & Điều Phối Host",
     role: "COORDINATOR" as UserRole,
     status: "ACTIVE" as "ACTIVE" | "INACTIVE",
@@ -80,11 +82,33 @@ export default function UsersPage() {
     return matchesSearch && matchesRole;
   });
 
+  const handleAvatarUploadInModal = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      setNotification({
+        type: "warning",
+        title: "File Dung Lượng Quá Lớn",
+        message: "Vui lòng chọn ảnh dưới 5MB.",
+      });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        setUserForm((prev) => ({ ...prev, avatarUrl: dataUrl }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleOpenAddUser = () => {
     setUserForm({
       fullName: "",
       email: "",
       password: "123456",
+      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
       department: "Phòng Booking & Điều Phối Host",
       role: "COORDINATOR",
       status: "ACTIVE",
@@ -107,6 +131,7 @@ export default function UsersPage() {
       fullName: user.fullName || "",
       email: user.email || "",
       password: user.password || "123456",
+      avatarUrl: user.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
       department: user.department || "",
       role: user.role || "COORDINATOR",
       status: user.status || "ACTIVE",
@@ -131,6 +156,7 @@ export default function UsersPage() {
         fullName: userForm.fullName,
         email: userForm.email,
         password: userForm.password,
+        avatarUrl: userForm.avatarUrl,
         department: userForm.department,
         role: userForm.role,
         status: userForm.status,
@@ -148,7 +174,7 @@ export default function UsersPage() {
         fullName: userForm.fullName,
         email: userForm.email,
         password: userForm.password || "123456",
-        avatarUrl: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
+        avatarUrl: userForm.avatarUrl || `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
         department: userForm.department,
         role: userForm.role,
         status: userForm.status,
@@ -477,6 +503,28 @@ export default function UsersPage() {
             </div>
 
             <form onSubmit={handleSaveUser} className="space-y-4 text-xs">
+              {/* Avatar File Upload Control */}
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <img
+                  src={userForm.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"}
+                  alt="Avatar"
+                  className="w-12 h-12 rounded-full object-cover border border-indigo-500 shrink-0"
+                />
+                <div className="flex-1 space-y-1">
+                  <p className="font-semibold text-slate-700 dark:text-slate-200 text-xs">Ảnh Đại Diện Nhân Viên</p>
+                  <label className="inline-flex items-center gap-1.5 px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-[11px] rounded cursor-pointer transition-colors">
+                    <Upload className="w-3 h-3" />
+                    Tải Ảnh Từ Máy Tính...
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAvatarUploadInModal}
+                    />
+                  </label>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-semibold text-slate-700 block mb-1">Họ và Tên Nhân Viên</label>
