@@ -13,7 +13,7 @@ import {
 
 export default function LoginPage() {
   const router = useRouter();
-  const { users, loginUser } = useCrmStore();
+  const { loginUser } = useCrmStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,16 +33,6 @@ export default function LoginPage() {
       router.push("/");
     } else {
       setErrorMsg("Tài khoản hoặc mật khẩu không chính xác.");
-    }
-  };
-
-  const handleQuickLogin = (uEmail: string, uPass?: string) => {
-    const targetPass = uPass || "123456";
-    setEmail(uEmail);
-    setPassword(targetPass);
-    const success = loginUser(uEmail, targetPass);
-    if (success) {
-      router.push("/");
     }
   };
 
@@ -94,7 +84,7 @@ export default function LoginPage() {
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nhanvien@liveagency.vn hoặc admin"
+                  placeholder="nhanvien@liveagency.vn"
                   className="pl-9 bg-slate-950/60 border-slate-800 text-white text-xs h-10 focus:border-indigo-500"
                 />
               </div>
@@ -122,24 +112,6 @@ export default function LoginPage() {
               Đăng Nhập Ngay
             </Button>
           </form>
-
-          {/* Quick Select User Login */}
-          <div className="pt-3 border-t border-slate-800/80 space-y-2">
-            <p className="text-[11px] font-bold text-slate-400">Đăng Nhập Nhanh Theo Tài Khoản:</p>
-            <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto pr-1">
-              {users.map((u) => (
-                <button
-                  key={u.id}
-                  type="button"
-                  onClick={() => handleQuickLogin(u.email, u.password)}
-                  className="px-2.5 py-1 rounded-md bg-slate-800/90 hover:bg-indigo-900/50 text-slate-200 hover:text-white border border-slate-700 text-[11px] font-medium flex items-center gap-1.5 transition-colors"
-                >
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  {u.fullName} ({u.role})
-                </button>
-              ))}
-            </div>
-          </div>
         </div>
 
         <p className="text-center text-[11px] text-slate-500">
