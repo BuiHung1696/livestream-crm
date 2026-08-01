@@ -9,7 +9,6 @@ import { useCrmStore } from "@/lib/store";
 import {
   Settings,
   Shield,
-  Key,
   Bell,
   Save,
   Lock,
@@ -22,10 +21,6 @@ export default function SettingsPage() {
   const [settings, setSettings] = useState({
     agencyName: "LiveAgency Booking CRM",
     defaultAgencyCommission: "15",
-    tiktokAppKey: "tt_app_live_89201948",
-    tiktokAppSecret: "••••••••••••••••••••••••",
-    shopeePartnerId: "shp_partner_90182",
-    ghnApiToken: "ghn_token_889102",
     autoConflictCheck: true,
     emailNotifications: true,
   });
@@ -35,7 +30,7 @@ export default function SettingsPage() {
     setNotification({
       type: "success",
       title: "Lưu Cấu Hình Thành Công",
-      message: "Các thiết lập hệ thống Agency, API Keys và Quy tắc cảnh báo đã được lưu lại.",
+      message: "Các thiết lập hệ thống Agency và Quy tắc cảnh báo vận hành đã được lưu lại thành công.",
     });
   };
 
@@ -64,7 +59,7 @@ export default function SettingsPage() {
           Cấu Hình Hệ Thống CRM
         </h2>
         <p className="text-xs text-slate-500">
-          Quản lý thiết lập chung Agency, kết nối API các sàn TikTok/Shopee và quy tắc cảnh báo vận hành
+          Quản lý thiết lập chung Agency và quy tắc cảnh báo vận hành hệ thống
         </p>
       </div>
 
@@ -99,60 +94,12 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* API Integration Settings */}
-        <Card className="border-slate-200 dark:border-slate-800">
-          <CardHeader>
-            <CardTitle className="text-base font-bold flex items-center gap-2">
-              <Key className="w-4 h-4 text-indigo-600" />
-              2. Kết Nối API TikTok Shop, Shopee Live & Vận Chuyển
-            </CardTitle>
-            <CardDescription>Nhập API Credentials để tự động đồng bộ doanh số GMV và theo dõi mã vận đơn sample</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 text-xs">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">TikTok Shop Open API Key</label>
-                <Input
-                  value={settings.tiktokAppKey}
-                  onChange={(e) => setSettings({ ...settings, tiktokAppKey: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">TikTok Shop App Secret</label>
-                <Input
-                  type="password"
-                  value={settings.tiktokAppSecret}
-                  onChange={(e) => setSettings({ ...settings, tiktokAppSecret: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Shopee Live Partner ID</label>
-                <Input
-                  value={settings.shopeePartnerId}
-                  onChange={(e) => setSettings({ ...settings, shopeePartnerId: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">GHN Express API Token</label>
-                <Input
-                  type="password"
-                  value={settings.ghnApiToken}
-                  onChange={(e) => setSettings({ ...settings, ghnApiToken: e.target.value })}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Operational Rules & System Notifications */}
         <Card className="border-slate-200 dark:border-slate-800">
           <CardHeader>
             <CardTitle className="text-base font-bold flex items-center gap-2">
               <Bell className="w-4 h-4 text-indigo-600" />
-              3. Quy Tắc Cảnh Báo & Thông Báo Vận Hành
+              2. Quy Tắc Cảnh Báo & Thông Báo Vận Hành
             </CardTitle>
             <CardDescription>Bật/tắt chế độ tự động phát hiện trùng ca live và gửi thông báo hệ thống</CardDescription>
           </CardHeader>
