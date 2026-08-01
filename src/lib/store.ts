@@ -13,7 +13,7 @@ interface CrmStore {
   // Auth & User Management State
   users: UserAccount[];
   currentUser: UserAccount | null;
-  loginUser: (email: string, role?: UserRole) => boolean;
+  loginUser: (email: string, password?: string, role?: UserRole) => boolean;
   logoutUser: () => void;
   addUser: (user: Omit<UserAccount, "id" | "createdAt">) => void;
   updateUser: (id: string, updated: Partial<UserAccount>) => void;
@@ -87,24 +87,33 @@ export const useCrmStore = create<CrmStore>()(
       users: MOCK_USERS,
       currentUser: MOCK_USERS[0],
 
-      loginUser: (email, role) => {
+      loginUser: (email, password, role) => {
         const state = get();
-        let targetUser = state.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+        const cleanEmail = email.trim().toLowerCase();
+
+        let targetUser = state.users.find((u) => u.email.trim().toLowerCase() === cleanEmail);
+
+        if (!targetUser && (cleanEmail === "admin@liveagency.vn" || cleanEmail === "admin")) {
+          targetUser = state.users.find((u) => u.role === "ADMIN") || state.users[0];
+        }
+
         if (!targetUser && role) {
           targetUser = state.users.find((u) => u.role === role);
         }
-        if (!targetUser) {
-          if (email.toLowerCase() === "admin@liveagency.vn" || email.toLowerCase() === "admin") {
-            targetUser = state.users[0];
-          }
-        }
+
         if (targetUser && targetUser.status === "ACTIVE") {
+          // If password provided and user has password set, verify match
+          if (password && targetUser.password && targetUser.password.trim() !== password.trim()) {
+            return false;
+          }
+
           set({ currentUser: targetUser });
           if (typeof document !== "undefined") {
             document.cookie = `crm_auth_token=${targetUser.id}; path=/; max-age=86400; SameSite=Strict`;
           }
           return true;
         }
+
         return false;
       },
 

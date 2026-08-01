@@ -28,7 +28,7 @@ export default function LoginPage() {
       return;
     }
 
-    const success = loginUser(email);
+    const success = loginUser(email, password);
     if (success) {
       router.push("/");
     } else {
