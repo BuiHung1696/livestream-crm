@@ -29,17 +29,17 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    title: "Tổng quan",
+    title: "Tổng Quan",
     href: "/",
     icon: LayoutGrid,
   },
   {
-    title: "Quản lý Talent",
+    title: "Quản Lý Talent",
     href: "/talents",
     icon: Users,
   },
   {
-    title: "Lịch làm việc",
+    title: "Lịch Ca Live",
     href: "/schedule",
     icon: Calendar,
   },
@@ -49,27 +49,27 @@ const navItems: NavItem[] = [
     icon: Building2,
   },
   {
-    title: "Chiến dịch & Điều phối",
+    title: "Chiến Dịch",
     href: "/campaigns",
     icon: PackageCheck,
   },
   {
-    title: "Quản Lý Nhiệm Vụ",
+    title: "Nhiệm Vụ",
     href: "/tasks",
     icon: CheckSquare,
   },
   {
-    title: "Báo cáo Doanh số",
+    title: "Báo Cáo Doanh Số",
     href: "/reports",
     icon: BarChart3,
   },
   {
-    title: "Tài Khoản & Phân Quyền",
+    title: "Nhân Viên & Phân Quyền",
     href: "/users",
     icon: ShieldCheck,
   },
   {
-    title: "Cấu hình Hệ thống",
+    title: "Cấu Hình Hệ Thống",
     href: "/settings",
     icon: Settings,
   },
