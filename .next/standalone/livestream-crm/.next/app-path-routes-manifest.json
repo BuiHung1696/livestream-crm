@@ -1,4 +1,5 @@
 {
+  "/(dashboard)/account/page": "/account",
   "/(dashboard)/brands/[id]/page": "/brands/[id]",
   "/(dashboard)/brands/page": "/brands",
   "/(dashboard)/campaigns/[id]/page": "/campaigns/[id]",

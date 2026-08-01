@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Radio,
   CheckSquare,
+  UserCheck,
 } from "lucide-react";
 
 interface NavItem {
@@ -61,6 +62,11 @@ const navItems: NavItem[] = [
     title: "Báo cáo Doanh số",
     href: "/reports",
     icon: BarChart3,
+  },
+  {
+    title: "Trang Cá Nhân",
+    href: "/account",
+    icon: UserCheck,
   },
   {
     title: "Tài Khoản & Phân Quyền",
