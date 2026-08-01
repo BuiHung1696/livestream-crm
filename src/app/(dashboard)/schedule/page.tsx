@@ -428,7 +428,7 @@ export default function SchedulePage() {
 
       {/* Modal 1: Create New Shift */}
       {isAddShiftOpen && (
-        <div className="fixed inset-0 w-screen h-screen z-[9999] bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="fixed inset-0 w-screen h-screen z-[9999] !mt-0 !top-0 !left-0 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-lg w-full p-6 space-y-4 shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h3 className="text-base font-bold text-slate-900 dark:text-white">Lên Lịch Ca Livestream / Booking Mới</h3>
@@ -533,7 +533,7 @@ export default function SchedulePage() {
 
       {/* Modal 2: Edit & Delete Scheduled Shift */}
       {editingShift && (
-        <div className="fixed inset-0 w-screen h-screen z-[9999] bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="fixed inset-0 w-screen h-screen z-[9999] !mt-0 !top-0 !left-0 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-lg w-full p-6 space-y-4 shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h3 className="text-base font-bold text-slate-900 dark:text-white">Điều Chỉnh Lịch Ca Live</h3>
@@ -627,7 +627,7 @@ export default function SchedulePage() {
 
       {/* Modal 3: Manual Entry of Actual Live Results */}
       {isResultModalOpen && (
-        <div className="fixed inset-0 w-screen h-screen z-[9999] bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+        <div className="fixed inset-0 w-screen h-screen z-[9999] !mt-0 !top-0 !left-0 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-md w-full p-6 space-y-4 shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
               <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">

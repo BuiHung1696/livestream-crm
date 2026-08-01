@@ -26,7 +26,7 @@ export function CustomToastModal({ notification, onClose }: CustomToastModalProp
   const isWarning = notification.type === "warning" || notification.type === "error";
 
   return (
-    <div className="fixed inset-0 w-screen h-screen z-[9999] !mt-0 !top-0 !left-0 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+    <div className="fixed inset-0 w-screen h-screen z-[99999] !mt-0 !top-0 !left-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-md w-full p-6 space-y-4 shadow-2xl relative">
         <button
           onClick={onClose}
