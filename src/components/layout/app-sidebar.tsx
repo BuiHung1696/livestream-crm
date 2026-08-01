@@ -64,11 +64,6 @@ const navItems: NavItem[] = [
     icon: BarChart3,
   },
   {
-    title: "Trang Cá Nhân",
-    href: "/account",
-    icon: UserCheck,
-  },
-  {
     title: "Tài Khoản & Phân Quyền",
     href: "/users",
     icon: ShieldCheck,
