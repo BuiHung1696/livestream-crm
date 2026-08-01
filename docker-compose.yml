@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: livestream_crm_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres:16-alpine
     container_name: livestream_crm_postgres
