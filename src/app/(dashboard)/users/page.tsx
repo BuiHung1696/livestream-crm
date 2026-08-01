@@ -326,7 +326,6 @@ export default function UsersPage() {
                 <TableHead className="whitespace-nowrap">Vai Trò</TableHead>
                 <TableHead className="whitespace-nowrap">Phòng Ban</TableHead>
                 <TableHead className="whitespace-nowrap">Quyền Hạn Chi Tiết</TableHead>
-                <TableHead className="text-center whitespace-nowrap">Mật Khẩu</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Trạng Thái</TableHead>
                 <TableHead className="text-center whitespace-nowrap">Thao Tác</TableHead>
               </TableRow>
@@ -411,14 +410,6 @@ export default function UsersPage() {
                         <span className="px-2 py-0.5 rounded text-[10px] bg-indigo-50 text-indigo-700 font-bold border border-indigo-200">Phân quyền</span>
                       )}
                     </div>
-                  </TableCell>
-
-                  {/* Password Column */}
-                  <TableCell className="text-center whitespace-nowrap">
-                    <span className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold text-[11px] inline-flex items-center gap-1 border border-slate-200 dark:border-slate-700">
-                      <Lock className="w-3 h-3 text-slate-400" />
-                      {user.password || "123456"}
-                    </span>
                   </TableCell>
 
                   <TableCell className="text-center whitespace-nowrap">
