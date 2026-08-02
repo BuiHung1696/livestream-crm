@@ -15,5 +15,6 @@
   "/(dashboard)/users/page": "/users",
   "/_global-error/page": "/_global-error",
   "/_not-found/page": "/_not-found",
+  "/api/db/route": "/api/db",
   "/login/page": "/login"
 }

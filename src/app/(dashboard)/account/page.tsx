@@ -81,6 +81,14 @@ export default function AccountPage() {
       department: profileForm.department,
     });
 
+    setTimeout(() => {
+      fetch("/api/db", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ users: useCrmStore.getState().users }),
+      }).catch(() => {});
+    }, 50);
+
     setNotification({
       type: "success",
       title: "Cập Nhật Hồ Sơ Thành Công",
@@ -123,6 +131,14 @@ export default function AccountPage() {
     updateUser(currentUser.id, {
       password: passwordForm.newPassword,
     });
+
+    setTimeout(() => {
+      fetch("/api/db", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ users: useCrmStore.getState().users }),
+      }).catch(() => {});
+    }, 50);
 
     setPasswordForm({
       currentPassword: "",

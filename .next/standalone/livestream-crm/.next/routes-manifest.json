@@ -73,6 +73,12 @@
       "namedRegex": "^/account(?:/)?$"
     },
     {
+      "page": "/api/db",
+      "regex": "^/api/db(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/db(?:/)?$"
+    },
+    {
       "page": "/brands",
       "regex": "^/brands(?:/)?$",
       "routeKeys": {},

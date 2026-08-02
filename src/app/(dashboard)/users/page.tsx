@@ -147,6 +147,14 @@ export default function UsersPage() {
     });
   };
 
+  const syncServerUsers = (usersList: any[]) => {
+    fetch("/api/db", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ users: usersList }),
+    }).catch(() => {});
+  };
+
   const handleSaveUser = (e: React.FormEvent) => {
     e.preventDefault();
     if (!userForm.fullName || !userForm.email) return;
@@ -188,6 +196,10 @@ export default function UsersPage() {
         message: `Đã tạo tài khoản cho nhân viên ${userForm.fullName} (${userForm.email}) với mật khẩu đã thiết lập.`,
       });
     }
+
+    setTimeout(() => {
+      syncServerUsers(useCrmStore.getState().users);
+    }, 50);
   };
 
   const handleDeleteUser = (userId: string, name: string) => {
@@ -199,6 +211,9 @@ export default function UsersPage() {
       cancelText: "Hủy",
       onConfirm: () => {
         deleteUser(userId);
+        setTimeout(() => {
+          syncServerUsers(useCrmStore.getState().users);
+        }, 50);
       },
     });
   };

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Header } from "@/components/layout/header";
+import { useCrmStore } from "@/lib/store";
 
 const PAGE_TITLES: Record<string, string> = {
   "/": "Tổng quan CRM & Doanh số Booking",
@@ -24,11 +25,27 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
   const pageTitle = PAGE_TITLES[pathname] || "CRM Dashboard";
-
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
+    fetch("/api/db")
+      .then((res) => res.json())
+      .then((serverData) => {
+        if (serverData && serverData.users && Array.isArray(serverData.users)) {
+          useCrmStore.setState((state) => ({
+            ...state,
+            users: serverData.users,
+            talents: serverData.talents || state.talents,
+            brands: serverData.brands || state.brands,
+            skus: serverData.skus || state.skus,
+            campaigns: serverData.campaigns || state.campaigns,
+            shifts: serverData.shifts || state.shifts,
+            tasks: serverData.tasks || state.tasks,
+          }));
+        }
+      })
+      .catch(() => {});
   }, []);
 
   if (!hasMounted) {

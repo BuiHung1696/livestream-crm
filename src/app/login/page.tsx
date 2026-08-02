@@ -19,7 +19,27 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  React.useEffect(() => {
+    fetch("/api/db")
+      .then((res) => res.json())
+      .then((serverData) => {
+        if (serverData && serverData.users && Array.isArray(serverData.users)) {
+          useCrmStore.setState((state) => ({
+            ...state,
+            users: serverData.users,
+            talents: serverData.talents || state.talents,
+            brands: serverData.brands || state.brands,
+            skus: serverData.skus || state.skus,
+            campaigns: serverData.campaigns || state.campaigns,
+            shifts: serverData.shifts || state.shifts,
+            tasks: serverData.tasks || state.tasks,
+          }));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
 
@@ -27,6 +47,17 @@ export default function LoginPage() {
       setErrorMsg("Vui lòng nhập Email tài khoản.");
       return;
     }
+
+    try {
+      const res = await fetch("/api/db");
+      const serverData = await res.json();
+      if (serverData && serverData.users && Array.isArray(serverData.users)) {
+        useCrmStore.setState((state) => ({
+          ...state,
+          users: serverData.users,
+        }));
+      }
+    } catch {}
 
     const success = loginUser(email, password);
     if (success) {
