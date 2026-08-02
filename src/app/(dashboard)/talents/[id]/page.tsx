@@ -352,7 +352,7 @@ export default function TalentDetailPage() {
   const talentShifts = shifts.filter((s) => s.talentId === talent.id);
   const completedShifts = talentShifts.filter((s) => s.actualGmv > 0 || s.shiftStatus === "COMPLETED");
 
-  const totalGmvGenerated = completedShifts.reduce((sum, s) => sum + (s.actualGmv || 0), 0) || (talent.avgGmvPerHour * 3.5);
+  const totalGmvGenerated = completedShifts.reduce((sum, s) => sum + (s.actualGmv || 0), 0);
   const totalCommissionEarned = totalGmvGenerated * (talent.affiliateCommission / 100);
 
   const zaloNumber = talent.zalo || talent.phone;
@@ -471,7 +471,7 @@ export default function TalentDetailPage() {
             <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/10 w-full md:w-auto justify-around md:justify-end">
               <div className="text-center px-3">
                 <span className="text-[10px] text-slate-300 uppercase font-semibold block">Ca Live Đã Thực Hiện</span>
-                <span className="text-lg font-bold text-emerald-400">{completedShifts.length || 4} Ca</span>
+                <span className="text-lg font-bold text-emerald-400">{completedShifts.length} Ca</span>
               </div>
               <div className="h-8 w-px bg-white/20" />
               <div className="text-center px-3">
