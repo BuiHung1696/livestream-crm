@@ -39,6 +39,12 @@ export function Header({ title }: { title: string }) {
   const { toggleSidebar, currentUser, logoutUser, talents, brands, skus, campaigns } = useCrmStore();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
+  const handleLogout = () => {
+    setIsUserMenuOpen(false);
+    logoutUser();
+    router.push("/login");
+  };
+
   // Global Search State
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -115,12 +121,6 @@ export function Header({ title }: { title: string }) {
 
   const totalMatches =
     matchedTalents.length + matchedBrands.length + matchedSkus.length + matchedCampaigns.length;
-
-  const handleLogout = () => {
-    logoutUser();
-    setIsUserMenuOpen(false);
-    router.push("/login");
-  };
 
   const handleNavigate = (path: string) => {
     setIsSearchOpen(false);
@@ -362,20 +362,20 @@ export function Header({ title }: { title: string }) {
                 <Link
                   href="/account"
                   onClick={() => setIsUserMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+                  className="flex items-center gap-2.5 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
                 >
                   <User className="w-3.5 h-3.5 text-indigo-600" />
-                  Hồ Sơ Cá Nhân & Đổi Mật Khẩu
+                  Hồ Sơ Cá Nhân
                 </Link>
 
                 {(currentUser?.role === "ADMIN" || currentUser?.permissions?.manageUsers) && (
                   <Link
                     href="/users"
                     onClick={() => setIsUserMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+                    className="flex items-center gap-2.5 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
                   >
                     <Shield className="w-3.5 h-3.5 text-indigo-600" />
-                    Quản Lý Nhân Viên & Phân Quyền
+                    Quản Lý Nhân Viên
                   </Link>
                 )}
 
@@ -383,10 +383,10 @@ export function Header({ title }: { title: string }) {
                   <Link
                     href="/settings"
                     onClick={() => setIsUserMenuOpen(false)}
-                    className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+                    className="flex items-center gap-2.5 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
                   >
                     <Settings className="w-3.5 h-3.5 text-slate-400" />
-                    Cấu Hình Hệ Thống
+                    Cấu Hình
                   </Link>
                 )}
               </div>
@@ -394,7 +394,7 @@ export function Header({ title }: { title: string }) {
               <div className="border-t border-slate-100 dark:border-slate-800 pt-1">
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 font-bold"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 font-bold"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   Đăng Xuất

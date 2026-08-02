@@ -39,7 +39,7 @@ const navItems: NavItem[] = [
     icon: Users,
   },
   {
-    title: "Lịch Ca Live",
+    title: "Lịch Live",
     href: "/schedule",
     icon: Calendar,
   },
@@ -59,17 +59,17 @@ const navItems: NavItem[] = [
     icon: CheckSquare,
   },
   {
-    title: "Báo Cáo Doanh Số",
+    title: "Báo Cáo",
     href: "/reports",
     icon: BarChart3,
   },
   {
-    title: "Nhân Viên & Phân Quyền",
+    title: "Quản Lý Nhân Viên",
     href: "/users",
     icon: ShieldCheck,
   },
   {
-    title: "Cấu Hình Hệ Thống",
+    title: "Cấu Hình",
     href: "/settings",
     icon: Settings,
   },
