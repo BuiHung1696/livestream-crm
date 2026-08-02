@@ -9,8 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { TalentBadge } from "@/components/talents/talent-badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useCrmStore } from "@/lib/store";
-import { Talent, TalentType, TalentMedia, PlatformType } from "@/types";
+import { Talent, TalentType, TalentMedia, TalentChannel, PlatformType } from "@/types";
 import { formatVND, formatNumber, compressImageFile, getChannelUrl } from "@/lib/utils";
 import {
   Search,
@@ -132,24 +133,24 @@ export default function TalentsPage() {
     zalo: "",
     address: "",
     avatarUrl: "",
-    selectedCategories: ["Thời trang", "Mỹ phẩm"] as string[],
-    tags: "Chốt đơn nhanh, Năng lượng cao",
+    selectedCategories: [] as string[],
+    tags: "",
     internalRating: "5.0",
-    avgGmvPerHour: "30000000",
-    fixedRatePerShift: "2500000",
-    videoRate: "5000000",
-    affiliateCommission: "10",
+    avgGmvPerHour: "",
+    fixedRatePerShift: "",
+    videoRate: "",
+    affiliateCommission: "",
     exclusivityBrands: "",
     // Social channels
     tiktokHandle: "",
-    tiktokFollowers: "200000",
-    tiktokViews: "15000",
+    tiktokFollowers: "",
+    tiktokViews: "",
     shopeeHandle: "",
-    shopeeFollowers: "100000",
+    shopeeFollowers: "",
     // Bank & Tax
-    bankName: "MB Bank",
-    accountNumber: "999988886666",
-    taxCode: "0319998881",
+    bankName: "",
+    accountNumber: "",
+    taxCode: "",
   });
 
   // Filter Logic
@@ -277,20 +278,20 @@ export default function TalentsPage() {
             fullName: fullName,
             stageName: stageName,
             talentType: talentType,
-            phone: cols[4] || "0987654321",
-            email: cols[5] || "talent@agency.vn",
-            address: "Studio Agency",
-            avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-            categories: cols[6] ? cols[6].split(";").map((s) => s.trim()) : ["Thời trang"],
-            tags: ["Chốt đơn nhanh"],
-            channels: [{ platform: "TIKTOK_LIVE", handle: `@${stageName.toLowerCase().replace(/\s+/g, "")}`, followers: 150000, avgViews: 8000 }],
+            phone: cols[4] || "",
+            email: cols[5] || "",
+            address: "",
+            avatarUrl: "",
+            categories: cols[6] ? cols[6].split(";").map((s) => s.trim()).filter(Boolean) : [],
+            tags: [],
+            channels: [],
             internalRating: 5.0,
-            avgGmvPerHour: parseFloat(cols[7]) || 30000000,
+            avgGmvPerHour: parseFloat(cols[7]) || 0,
             avgViewsPerVideo: 0,
-            fixedRatePerShift: parseFloat(cols[8]) || 2500000,
-            videoRate: 5000000,
-            affiliateCommission: parseFloat(cols[9]) || 10,
-            exclusivityBrands: cols[10] ? cols[10].split(";").map((s) => s.trim()) : [],
+            fixedRatePerShift: parseFloat(cols[8]) || 0,
+            videoRate: 0,
+            affiliateCommission: parseFloat(cols[9]) || 0,
+            exclusivityBrands: cols[10] ? cols[10].split(";").map((s) => s.trim()).filter(Boolean) : [],
             status: "AVAILABLE",
           });
         }
@@ -315,6 +316,12 @@ export default function TalentsPage() {
   };
 
   const handleOpenAddModal = () => {
+    setEditingTalent(null);
+    setModalMediaList([]);
+    setSelectedMediaFile(null);
+    setMediaPreviewUrl("");
+    setMediaTitle("");
+
     setFormData({
       fullName: "",
       stageName: "",
@@ -323,23 +330,23 @@ export default function TalentsPage() {
       email: "",
       zalo: "",
       address: "",
-      avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      selectedCategories: ["Thời trang", "Mỹ phẩm"],
-      tags: "Chốt đơn nhanh, Năng lượng cao",
+      avatarUrl: "",
+      selectedCategories: [],
+      tags: "",
       internalRating: "5.0",
-      avgGmvPerHour: "30000000",
-      fixedRatePerShift: "2500000",
-      videoRate: "5000000",
-      affiliateCommission: "10",
+      avgGmvPerHour: "",
+      fixedRatePerShift: "",
+      videoRate: "",
+      affiliateCommission: "",
       exclusivityBrands: "",
-      tiktokHandle: "@talentlive",
-      tiktokFollowers: "250000",
-      tiktokViews: "18000",
-      shopeeHandle: "talent_shopee",
-      shopeeFollowers: "120000",
-      bankName: "MB Bank",
-      accountNumber: "999988886666",
-      taxCode: "0319998881",
+      tiktokHandle: "",
+      tiktokFollowers: "",
+      tiktokViews: "",
+      shopeeHandle: "",
+      shopeeFollowers: "",
+      bankName: "",
+      accountNumber: "",
+      taxCode: "",
     });
     setIsAddModalOpen(true);
   };
@@ -349,58 +356,67 @@ export default function TalentsPage() {
     const tiktok = talent.channels?.find((c) => c.platform === "TIKTOK_LIVE");
     const shopee = talent.channels?.find((c) => c.platform === "SHOPEE_LIVE");
 
+    setModalMediaList(talent.mediaList || []);
+    setSelectedMediaFile(null);
+    setMediaPreviewUrl("");
+    setMediaTitle("");
+
     setFormData({
       fullName: talent.fullName,
       stageName: talent.stageName,
       talentType: talent.talentType,
-      phone: talent.phone,
+      phone: talent.phone || "",
       email: talent.email || "",
-      zalo: talent.zalo || talent.phone,
+      zalo: talent.zalo || "",
       address: talent.address || "",
-      avatarUrl: talent.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      selectedCategories: talent.categories.length > 0 ? talent.categories : ["Thời trang"],
-      tags: talent.tags.join(", "),
-      internalRating: talent.internalRating.toString(),
-      avgGmvPerHour: talent.avgGmvPerHour.toString(),
-      fixedRatePerShift: talent.fixedRatePerShift.toString(),
-      videoRate: talent.videoRate.toString(),
-      affiliateCommission: talent.affiliateCommission.toString(),
-      exclusivityBrands: talent.exclusivityBrands.join(", "),
-      tiktokHandle: tiktok?.handle || `@${talent.stageName.toLowerCase().replace(/\s+/g, "")}`,
-      tiktokFollowers: tiktok?.followers.toString() || "200000",
-      tiktokViews: tiktok?.avgViews.toString() || "15000",
-      shopeeHandle: shopee?.handle || `${talent.stageName.toLowerCase().replace(/\s+/g, "")}_official`,
-      shopeeFollowers: shopee?.followers.toString() || "100000",
-      bankName: "MB Bank",
-      accountNumber: "999988886666",
-      taxCode: talent.taxCode || "0319998881",
+      avatarUrl: talent.avatarUrl || "",
+      selectedCategories: talent.categories || [],
+      tags: talent.tags ? talent.tags.join(", ") : "",
+      internalRating: (talent.internalRating ?? 5.0).toString(),
+      avgGmvPerHour: talent.avgGmvPerHour ? talent.avgGmvPerHour.toString() : "",
+      fixedRatePerShift: talent.fixedRatePerShift ? talent.fixedRatePerShift.toString() : "",
+      videoRate: talent.videoRate ? talent.videoRate.toString() : "",
+      affiliateCommission: talent.affiliateCommission ? talent.affiliateCommission.toString() : "",
+      exclusivityBrands: talent.exclusivityBrands ? talent.exclusivityBrands.join(", ") : "",
+      tiktokHandle: tiktok?.handle || "",
+      tiktokFollowers: tiktok?.followers ? tiktok.followers.toString() : "",
+      tiktokViews: tiktok?.avgViews ? tiktok.avgViews.toString() : "",
+      shopeeHandle: shopee?.handle || "",
+      shopeeFollowers: shopee?.followers ? shopee.followers.toString() : "",
+      bankName: talent.bankName || "",
+      accountNumber: talent.accountNumber || "",
+      taxCode: talent.taxCode || "",
     });
+    setIsAddModalOpen(true);
   };
 
   const handleSaveTalent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.stageName) return;
 
-    const categories = formData.selectedCategories.length > 0 ? formData.selectedCategories : ["Thời trang"];
-    const tags = formData.tags ? formData.tags.split(",").map((s) => s.trim()) : ["Chốt đơn nhanh"];
+    const categories = formData.selectedCategories;
+    const tags = formData.tags ? formData.tags.split(",").map((s) => s.trim()).filter(Boolean) : [];
     const exclusivity = formData.exclusivityBrands
-      ? formData.exclusivityBrands.split(",").map((s) => s.trim())
+      ? formData.exclusivityBrands.split(",").map((s) => s.trim()).filter(Boolean)
       : [];
 
-    const channels = [
-      {
-        platform: "TIKTOK_LIVE" as const,
-        handle: formData.tiktokHandle || `@${formData.stageName.toLowerCase().replace(/\s+/g, "")}`,
-        followers: parseInt(formData.tiktokFollowers) || 200000,
-        avgViews: parseInt(formData.tiktokViews) || 15000,
-      },
-      {
-        platform: "SHOPEE_LIVE" as const,
-        handle: formData.shopeeHandle || `${formData.stageName.toLowerCase().replace(/\s+/g, "")}_official`,
-        followers: parseInt(formData.shopeeFollowers) || 100000,
-        avgViews: 8000,
-      },
-    ];
+    const channels: TalentChannel[] = [];
+    if (formData.tiktokHandle.trim()) {
+      channels.push({
+        platform: "TIKTOK_LIVE",
+        handle: formData.tiktokHandle.trim(),
+        followers: parseInt(formData.tiktokFollowers) || 0,
+        avgViews: parseInt(formData.tiktokViews) || 0,
+      });
+    }
+    if (formData.shopeeHandle.trim()) {
+      channels.push({
+        platform: "SHOPEE_LIVE",
+        handle: formData.shopeeHandle.trim(),
+        followers: parseInt(formData.shopeeFollowers) || 0,
+        avgViews: 0,
+      });
+    }
 
     let finalMediaList = [...modalMediaList];
     if (mediaPreviewUrl) {
@@ -425,11 +441,11 @@ export default function TalentsPage() {
         fullName: formData.fullName,
         stageName: formData.stageName,
         talentType: formData.talentType,
-        phone: formData.phone,
-        email: formData.email,
-        zalo: formData.zalo,
-        address: formData.address,
-        avatarUrl: formData.avatarUrl,
+        phone: formData.phone || "",
+        email: formData.email || "",
+        zalo: formData.zalo || "",
+        address: formData.address || "",
+        avatarUrl: formData.avatarUrl || "",
         categories: categories,
         tags: tags,
         channels: channels,
@@ -439,20 +455,23 @@ export default function TalentsPage() {
         videoRate: parseFloat(formData.videoRate) || 0,
         affiliateCommission: parseFloat(formData.affiliateCommission) || 0,
         exclusivityBrands: exclusivity,
-        taxCode: formData.taxCode,
+        bankName: formData.bankName || "",
+        accountNumber: formData.accountNumber || "",
+        taxCode: formData.taxCode || "",
         mediaList: finalMediaList,
       });
       setEditingTalent(null);
+      setIsAddModalOpen(false);
     } else {
       addTalent({
         fullName: formData.fullName,
         stageName: formData.stageName,
         talentType: formData.talentType,
-        phone: formData.phone || "0987654321",
-        email: formData.email || "talent@agency.vn",
-        zalo: formData.zalo || formData.phone,
-        address: formData.address || "Studio Q7",
-        avatarUrl: formData.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+        phone: formData.phone || "",
+        email: formData.email || "",
+        zalo: formData.zalo || "",
+        address: formData.address || "",
+        avatarUrl: formData.avatarUrl || "",
         categories: categories,
         tags: tags,
         channels: channels,
@@ -463,7 +482,9 @@ export default function TalentsPage() {
         videoRate: parseFloat(formData.videoRate) || 0,
         affiliateCommission: parseFloat(formData.affiliateCommission) || 0,
         exclusivityBrands: exclusivity,
-        taxCode: formData.taxCode,
+        bankName: formData.bankName || "",
+        accountNumber: formData.accountNumber || "",
+        taxCode: formData.taxCode || "",
         status: "AVAILABLE",
         mediaList: finalMediaList,
       });
@@ -660,11 +681,12 @@ export default function TalentsPage() {
                         href={`/talents/${talent.id}`}
                         className="flex items-center gap-3 group/talent text-left"
                       >
-                        <img
-                          src={talent.avatarUrl}
-                          alt={talent.stageName}
-                          className="w-10 h-10 rounded-full object-cover border border-slate-200 group-hover/talent:border-indigo-600 transition-colors"
-                        />
+                        <Avatar className="w-10 h-10 border border-slate-200 group-hover/talent:border-indigo-600 transition-colors">
+                          <AvatarImage src={talent.avatarUrl} alt={talent.stageName} className="object-cover" />
+                          <AvatarFallback className="text-xs font-bold text-indigo-700 bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300">
+                            {talent.stageName ? talent.stageName.slice(0, 2).toUpperCase() : "TL"}
+                          </AvatarFallback>
+                        </Avatar>
                         <div>
                           <p className="font-bold text-slate-900 dark:text-white leading-tight group-hover/talent:text-indigo-600 group-hover/talent:underline transition-colors">
                             {talent.stageName}
@@ -1210,11 +1232,12 @@ export default function TalentsPage() {
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 max-w-xl w-full p-6 space-y-5 shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-start justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
               <div className="flex items-center gap-3.5">
-                <img
-                  src={selectedTalent.avatarUrl}
-                  alt={selectedTalent.stageName}
-                  className="w-14 h-14 rounded-full object-cover border-2 border-indigo-600 shadow-sm"
-                />
+                <Avatar className="w-14 h-14 border-2 border-indigo-600 shadow-sm">
+                  <AvatarImage src={selectedTalent.avatarUrl} alt={selectedTalent.stageName} className="object-cover" />
+                  <AvatarFallback className="text-base font-bold text-indigo-700 bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300">
+                    {selectedTalent.stageName ? selectedTalent.stageName.slice(0, 2).toUpperCase() : "TL"}
+                  </AvatarFallback>
+                </Avatar>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                     {selectedTalent.stageName} ({selectedTalent.fullName})
@@ -1238,15 +1261,15 @@ export default function TalentsPage() {
               <div className="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900 p-3 rounded-lg border border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2">
                   <Phone className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  <span>SĐT: <b>{selectedTalent.phone}</b></span>
+                  <span>SĐT: <b>{selectedTalent.phone || "Chưa cập nhật"}</b></span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  <span className="truncate">Email: <b>{selectedTalent.email || "N/A"}</b></span>
+                  <span className="truncate">Email: <b>{selectedTalent.email || "Chưa cập nhật"}</b></span>
                 </div>
                 <div className="flex items-center gap-2 col-span-2">
                   <MapPin className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
-                  <span className="truncate">Địa chỉ: <b>{selectedTalent.address || "Studio Q7"}</b></span>
+                  <span className="truncate">Địa chỉ: <b>{selectedTalent.address || "Chưa cập nhật"}</b></span>
                 </div>
               </div>
             </div>

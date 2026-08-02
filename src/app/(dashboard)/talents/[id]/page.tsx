@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TalentBadge } from "@/components/talents/talent-badge";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { TalentMediaGallery } from "@/components/talents/talent-media-gallery";
 import { useCrmStore } from "@/lib/store";
-import { Talent, TalentType, TalentMedia, PlatformType } from "@/types";
+import { Talent, TalentType, TalentMedia, TalentChannel, PlatformType } from "@/types";
 import { formatVND, formatNumber, compressImageFile, getChannelUrl } from "@/lib/utils";
 import { PREDEFINED_CATEGORIES } from "@/app/(dashboard)/talents/page";
 import { CustomToastModal, CustomNotification } from "@/components/ui/custom-toast";
@@ -192,27 +193,27 @@ export default function TalentDetailPage() {
       fullName: talent.fullName,
       stageName: talent.stageName,
       talentType: talent.talentType,
-      phone: talent.phone,
+      phone: talent.phone || "",
       email: talent.email || "",
-      zalo: talent.zalo || talent.phone,
+      zalo: talent.zalo || "",
       address: talent.address || "",
-      avatarUrl: talent.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      selectedCategories: talent.categories.length > 0 ? talent.categories : ["Thời trang"],
-      tags: talent.tags.join(", "),
-      internalRating: talent.internalRating.toString(),
-      avgGmvPerHour: talent.avgGmvPerHour.toString(),
-      fixedRatePerShift: talent.fixedRatePerShift.toString(),
-      videoRate: talent.videoRate.toString(),
-      affiliateCommission: talent.affiliateCommission.toString(),
-      exclusivityBrands: talent.exclusivityBrands.join(", "),
-      tiktokHandle: tiktok?.handle || `@${talent.stageName.toLowerCase().replace(/\s+/g, "")}`,
-      tiktokFollowers: tiktok?.followers.toString() || "200000",
-      tiktokViews: tiktok?.avgViews.toString() || "15000",
-      shopeeHandle: shopee?.handle || `${talent.stageName.toLowerCase().replace(/\s+/g, "")}_official`,
-      shopeeFollowers: shopee?.followers.toString() || "100000",
-      bankName: "MB Bank",
-      accountNumber: "999988886666",
-      taxCode: talent.taxCode || "0319998881",
+      avatarUrl: talent.avatarUrl || "",
+      selectedCategories: talent.categories || [],
+      tags: talent.tags ? talent.tags.join(", ") : "",
+      internalRating: (talent.internalRating ?? 5.0).toString(),
+      avgGmvPerHour: talent.avgGmvPerHour ? talent.avgGmvPerHour.toString() : "",
+      fixedRatePerShift: talent.fixedRatePerShift ? talent.fixedRatePerShift.toString() : "",
+      videoRate: talent.videoRate ? talent.videoRate.toString() : "",
+      affiliateCommission: talent.affiliateCommission ? talent.affiliateCommission.toString() : "",
+      exclusivityBrands: talent.exclusivityBrands ? talent.exclusivityBrands.join(", ") : "",
+      tiktokHandle: tiktok?.handle || "",
+      tiktokFollowers: tiktok?.followers ? tiktok.followers.toString() : "",
+      tiktokViews: tiktok?.avgViews ? tiktok.avgViews.toString() : "",
+      shopeeHandle: shopee?.handle || "",
+      shopeeFollowers: shopee?.followers ? shopee.followers.toString() : "",
+      bankName: talent.bankName || "",
+      accountNumber: talent.accountNumber || "",
+      taxCode: talent.taxCode || "",
     });
 
     setIsEditModalOpen(true);
@@ -278,26 +279,29 @@ export default function TalentDetailPage() {
     e.preventDefault();
     if (!formData.fullName || !formData.stageName) return;
 
-    const categories = formData.selectedCategories.length > 0 ? formData.selectedCategories : ["Thời trang"];
-    const tags = formData.tags ? formData.tags.split(",").map((s) => s.trim()) : ["Chốt đơn nhanh"];
+    const categories = formData.selectedCategories;
+    const tags = formData.tags ? formData.tags.split(",").map((s) => s.trim()).filter(Boolean) : [];
     const exclusivity = formData.exclusivityBrands
-      ? formData.exclusivityBrands.split(",").map((s) => s.trim())
+      ? formData.exclusivityBrands.split(",").map((s) => s.trim()).filter(Boolean)
       : [];
 
-    const channels = [
-      {
-        platform: "TIKTOK_LIVE" as const,
-        handle: formData.tiktokHandle || `@${formData.stageName.toLowerCase().replace(/\s+/g, "")}`,
-        followers: parseInt(formData.tiktokFollowers) || 200000,
-        avgViews: parseInt(formData.tiktokViews) || 15000,
-      },
-      {
-        platform: "SHOPEE_LIVE" as const,
-        handle: formData.shopeeHandle || `${formData.stageName.toLowerCase().replace(/\s+/g, "")}_official`,
-        followers: parseInt(formData.shopeeFollowers) || 100000,
-        avgViews: 8000,
-      },
-    ];
+    const channels: TalentChannel[] = [];
+    if (formData.tiktokHandle.trim()) {
+      channels.push({
+        platform: "TIKTOK_LIVE",
+        handle: formData.tiktokHandle.trim(),
+        followers: parseInt(formData.tiktokFollowers) || 0,
+        avgViews: parseInt(formData.tiktokViews) || 0,
+      });
+    }
+    if (formData.shopeeHandle.trim()) {
+      channels.push({
+        platform: "SHOPEE_LIVE",
+        handle: formData.shopeeHandle.trim(),
+        followers: parseInt(formData.shopeeFollowers) || 0,
+        avgViews: 0,
+      });
+    }
 
     let finalMediaList = [...modalMediaList];
     if (mediaPreviewUrl) {
@@ -321,11 +325,11 @@ export default function TalentDetailPage() {
       fullName: formData.fullName,
       stageName: formData.stageName,
       talentType: formData.talentType,
-      phone: formData.phone,
-      email: formData.email,
-      zalo: formData.zalo,
-      address: formData.address,
-      avatarUrl: formData.avatarUrl,
+      phone: formData.phone || "",
+      email: formData.email || "",
+      zalo: formData.zalo || "",
+      address: formData.address || "",
+      avatarUrl: formData.avatarUrl || "",
       categories: categories,
       tags: tags,
       channels: channels,
@@ -335,7 +339,9 @@ export default function TalentDetailPage() {
       videoRate: parseFloat(formData.videoRate) || 0,
       affiliateCommission: parseFloat(formData.affiliateCommission) || 0,
       exclusivityBrands: exclusivity,
-      taxCode: formData.taxCode,
+      bankName: formData.bankName || "",
+      accountNumber: formData.accountNumber || "",
+      taxCode: formData.taxCode || "",
       mediaList: finalMediaList,
     });
 
@@ -423,11 +429,12 @@ export default function TalentDetailPage() {
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <img
-                src={talent.avatarUrl}
-                alt={talent.stageName}
-                className="w-20 h-20 rounded-full object-cover border-4 border-indigo-500 shadow-xl"
-              />
+              <Avatar className="w-20 h-20 border-4 border-indigo-500 shadow-xl">
+                <AvatarImage src={talent.avatarUrl} alt={talent.stageName} className="object-cover" />
+                <AvatarFallback className="text-xl font-bold text-indigo-700 bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300">
+                  {talent.stageName ? talent.stageName.slice(0, 2).toUpperCase() : "TL"}
+                </AvatarFallback>
+              </Avatar>
               <div className="space-y-1.5">
                 <div className="flex items-center gap-3">
                   <h1 className="text-2xl font-bold">{talent.stageName}</h1>
@@ -442,7 +449,7 @@ export default function TalentDetailPage() {
                   <span className="flex items-center gap-1">
                     <Phone className="w-3.5 h-3.5 text-indigo-400" />
                     {canContactTalent ? (
-                      <b className="text-white">{talent.phone}</b>
+                      <b className="text-white">{talent.phone || "Chưa cập nhật"}</b>
                     ) : (
                       <span className="text-slate-400 italic">0987***321 (Đã khóa)</span>
                     )}
@@ -451,7 +458,7 @@ export default function TalentDetailPage() {
                   <span className="flex items-center gap-1">
                     <Mail className="w-3.5 h-3.5 text-indigo-400" />
                     {canContactTalent ? (
-                      <b className="text-white">{talent.email || "N/A"}</b>
+                      <b className="text-white">{talent.email || "Chưa cập nhật"}</b>
                     ) : (
                       <span className="text-slate-400 italic">trang***@agency.vn (Đã khóa)</span>
                     )}
@@ -492,27 +499,31 @@ export default function TalentDetailPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-xs">
-            {talent.channels.map((ch, idx) => (
-              <div key={idx} className="p-3 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 space-y-1">
-                <div className="flex items-center justify-between font-bold">
-                  <span className="text-indigo-600 font-extrabold">{ch.platform}</span>
-                  <a
-                    href={getChannelUrl(ch.platform, ch.handle)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={`Mở trang kênh ${ch.platform} (${ch.handle})`}
-                    className="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 hover:underline flex items-center gap-1 font-bold transition-colors"
-                  >
-                    {ch.handle}
-                    <ExternalLink className="w-3.5 h-3.5 text-indigo-500 opacity-80" />
-                  </a>
+            {talent.channels && talent.channels.length > 0 ? (
+              talent.channels.map((ch, idx) => (
+                <div key={idx} className="p-3 rounded-lg border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 space-y-1">
+                  <div className="flex items-center justify-between font-bold">
+                    <span className="text-indigo-600 font-extrabold">{ch.platform}</span>
+                    <a
+                      href={getChannelUrl(ch.platform, ch.handle)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`Mở trang kênh ${ch.platform} (${ch.handle})`}
+                      className="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 hover:underline flex items-center gap-1 font-bold transition-colors"
+                    >
+                      {ch.handle}
+                      <ExternalLink className="w-3.5 h-3.5 text-indigo-500 opacity-80" />
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500 pt-1 border-t border-slate-200 dark:border-slate-800">
+                    <span>Followers: <b className="text-slate-900 dark:text-white">{formatNumber(ch.followers)}</b></span>
+                    <span>Avg Views: <b className="text-slate-900 dark:text-white">{formatNumber(ch.avgViews)}</b></span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-slate-500 pt-1 border-t border-slate-200 dark:border-slate-800">
-                  <span>Followers: <b className="text-slate-900 dark:text-white">{formatNumber(ch.followers)}</b></span>
-                  <span>Avg Views: <b className="text-slate-900 dark:text-white">{formatNumber(ch.avgViews)}</b></span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-slate-400 italic text-xs py-2 text-center">Chưa liên kết kênh mạng xã hội</p>
+            )}
           </CardContent>
         </Card>
 
@@ -556,22 +567,30 @@ export default function TalentDetailPage() {
             <div>
               <span className="text-[11px] font-bold text-slate-500 block mb-1">Ngành Hàng Mạnh:</span>
               <div className="flex flex-wrap gap-1">
-                {talent.categories.map((c) => (
-                  <span key={c} className="px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                    {c}
-                  </span>
-                ))}
+                {talent.categories && talent.categories.length > 0 ? (
+                  talent.categories.map((c) => (
+                    <span key={c} className="px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      {c}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-slate-400 italic text-[11px]">Chưa cập nhật</span>
+                )}
               </div>
             </div>
 
             <div>
               <span className="text-[11px] font-bold text-slate-500 block mb-1">Skill Tags Phong Cách:</span>
               <div className="flex flex-wrap gap-1">
-                {talent.tags.map((t) => (
-                  <span key={t} className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
-                    {t}
-                  </span>
-                ))}
+                {talent.tags && talent.tags.length > 0 ? (
+                  talent.tags.map((t) => (
+                    <span key={t} className="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                      {t}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-slate-400 italic text-[11px]">Chưa cập nhật</span>
+                )}
               </div>
             </div>
 
