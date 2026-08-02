@@ -367,25 +367,27 @@ export function Header({ title }: { title: string }) {
                   <User className="w-3.5 h-3.5 text-indigo-600" />
                   Hồ Sơ Cá Nhân & Đổi Mật Khẩu
                 </Link>
-                {currentUser?.role === "ADMIN" && (
-                  <>
-                    <Link
-                      href="/users"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
-                    >
-                      <Shield className="w-3.5 h-3.5 text-indigo-600" />
-                      Quản Lý Nhân Viên & Phân Quyền
-                    </Link>
-                    <Link
-                      href="/settings"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
-                    >
-                      <Settings className="w-3.5 h-3.5 text-slate-400" />
-                      Cấu Hình Hệ Thống
-                    </Link>
-                  </>
+
+                {(currentUser?.role === "ADMIN" || currentUser?.permissions?.manageUsers) && (
+                  <Link
+                    href="/users"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-indigo-600" />
+                    Quản Lý Nhân Viên & Phân Quyền
+                  </Link>
+                )}
+
+                {(currentUser?.role === "ADMIN" || currentUser?.permissions?.manageSettings) && (
+                  <Link
+                    href="/settings"
+                    onClick={() => setIsUserMenuOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+                  >
+                    <Settings className="w-3.5 h-3.5 text-slate-400" />
+                    Cấu Hình Hệ Thống
+                  </Link>
                 )}
               </div>
 

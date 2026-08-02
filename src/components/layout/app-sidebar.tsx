@@ -77,7 +77,33 @@ const navItems: NavItem[] = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { isSidebarCollapsed } = useCrmStore();
+  const { currentUser, isSidebarCollapsed } = useCrmStore();
+
+  const isNavItemVisible = (item: NavItem) => {
+    if (!currentUser) return true;
+    if (currentUser.role === "ADMIN") return true;
+
+    const perms = currentUser.permissions || {};
+    switch (item.href) {
+      case "/talents":
+        return !!perms.manageTalents;
+      case "/schedule":
+        return !!perms.manageSchedule;
+      case "/brands":
+      case "/campaigns":
+        return !!perms.manageCampaigns;
+      case "/reports":
+        return !!perms.viewReports;
+      case "/users":
+        return !!perms.manageUsers;
+      case "/settings":
+        return !!perms.manageSettings;
+      default:
+        return true; // "/", "/tasks"
+    }
+  };
+
+  const visibleNavItems = navItems.filter(isNavItemVisible);
 
   return (
     <aside
@@ -106,7 +132,7 @@ export function AppSidebar() {
 
         {/* Navigation Items */}
         <nav className="p-3 space-y-1 mt-1">
-          {navItems.map((item) => {
+          {visibleNavItems.map((item) => {
             const isActive =
               pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
             const Icon = item.icon;
