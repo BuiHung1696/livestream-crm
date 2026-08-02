@@ -27,12 +27,14 @@ export default function LoginPage() {
           useCrmStore.setState((state) => ({
             ...state,
             users: serverData.users,
-            talents: serverData.talents || state.talents,
-            brands: serverData.brands || state.brands,
-            skus: serverData.skus || state.skus,
-            campaigns: serverData.campaigns || state.campaigns,
-            shifts: serverData.shifts || state.shifts,
-            tasks: serverData.tasks || state.tasks,
+            talents: Array.isArray(serverData.talents) ? serverData.talents : state.talents,
+            brands: Array.isArray(serverData.brands) ? serverData.brands : state.brands,
+            skus: Array.isArray(serverData.skus) ? serverData.skus : state.skus,
+            campaigns: Array.isArray(serverData.campaigns) ? serverData.campaigns : state.campaigns,
+            shifts: Array.isArray(serverData.shifts) ? serverData.shifts : state.shifts,
+            tasks: Array.isArray(serverData.tasks) ? serverData.tasks : state.tasks,
+            conversations: Array.isArray(serverData.conversations) ? serverData.conversations : state.conversations,
+            chatMessages: serverData.chatMessages || state.chatMessages,
           }));
         }
       })

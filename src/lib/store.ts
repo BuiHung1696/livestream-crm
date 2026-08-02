@@ -644,3 +644,23 @@ export const useCrmStore = create<CrmStore>()(
     }
   )
 );
+
+if (typeof window !== "undefined") {
+  useCrmStore.subscribe((state) => {
+    fetch("/api/db", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        users: state.users,
+        talents: state.talents,
+        brands: state.brands,
+        skus: state.skus,
+        campaigns: state.campaigns,
+        shifts: state.shifts,
+        tasks: state.tasks,
+        conversations: state.conversations,
+        chatMessages: state.chatMessages,
+      }),
+    }).catch(() => {});
+  });
+}

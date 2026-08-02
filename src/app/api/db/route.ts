@@ -16,7 +16,6 @@ import {
 const DATA_DIR = path.join(process.cwd(), "data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 
-// Helper to ensure data folder and db.json exist
 function getDbData() {
   try {
     if (!fs.existsSync(DATA_DIR)) {
@@ -90,4 +89,21 @@ export async function POST(request: Request) {
   } catch (error) {
     return NextResponse.json({ success: false, error: (error as Error).message }, { status: 500 });
   }
+}
+
+// DELETE handler: reset database to clean state (clear all demo data)
+export async function DELETE() {
+  const cleanData = {
+    users: MOCK_USERS,
+    talents: [],
+    brands: [],
+    skus: [],
+    campaigns: [],
+    shifts: [],
+    tasks: [],
+    conversations: [],
+    chatMessages: {},
+  };
+  saveDbData(cleanData);
+  return NextResponse.json({ success: true, data: cleanData });
 }
