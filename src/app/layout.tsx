@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Livestream CRM - Quản lý Host, KOC, KOL & Booking",
-  description: "Hệ thống CRM điều phối và quản lý Host Livestream, KOC, KOL chuyên nghiệp",
+  title: "PEAKCOM - Commerce Growth Agency",
+  description: "PEAKCOM - Hệ thống CRM điều phối và quản lý Host Livestream, KOC, KOL & Booking chiến dịch",
 };
 
 export default function RootLayout({

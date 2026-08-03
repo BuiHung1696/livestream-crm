@@ -121,10 +121,10 @@ export function AppSidebar() {
           {!isSidebarCollapsed && (
             <div className="overflow-hidden">
               <h1 className="font-extrabold text-sm text-slate-900 dark:text-white tracking-wide truncate">
-                LIVEAGENCY
+                PEAKCOM
               </h1>
               <p className="text-[10px] text-slate-500 font-medium truncate">
-                Livestream Booking CRM
+                Commerce Growth Agency
               </p>
             </div>
           )}

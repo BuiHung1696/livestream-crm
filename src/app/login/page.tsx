@@ -82,10 +82,10 @@ export default function LoginPage() {
             <Tv className="w-7 h-7" />
           </div>
           <h1 className="text-2xl font-extrabold tracking-tight text-white">
-            LiveAgency CRM System
+            PEAKCOM
           </h1>
-          <p className="text-xs text-slate-400">
-            Hệ thống Quản lý Host Livestream, KOC, KOL & Booking Chiến Dịch
+          <p className="text-xs text-indigo-400 font-bold uppercase tracking-wider">
+            Commerce Growth Agency
           </p>
         </div>
 
@@ -117,7 +117,7 @@ export default function LoginPage() {
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="nhanvien@liveagency.vn"
+                  placeholder="nhanvien@peakcom.vn"
                   className="pl-9 bg-slate-950/60 border-slate-800 text-white text-xs h-10 focus:border-indigo-500"
                 />
               </div>
@@ -148,7 +148,7 @@ export default function LoginPage() {
         </div>
 
         <p className="text-center text-[11px] text-slate-500">
-          © 2026 LiveAgency CRM System. All rights reserved.
+          © 2026 PEAKCOM - Commerce Growth Agency. All rights reserved.
         </p>
       </div>
     </div>

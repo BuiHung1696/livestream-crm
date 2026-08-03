@@ -555,7 +555,7 @@ export default function UsersPage() {
                   <Input
                     required
                     type="email"
-                    placeholder="nhanvien@liveagency.vn"
+                    placeholder="nhanvien@peakcom.vn"
                     value={userForm.email || ""}
                     onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
                   />

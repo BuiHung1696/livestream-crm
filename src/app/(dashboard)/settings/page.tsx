@@ -19,7 +19,7 @@ export default function SettingsPage() {
   const [notification, setNotification] = useState<CustomNotification | null>(null);
 
   const [settings, setSettings] = useState({
-    agencyName: "LiveAgency Booking CRM",
+    agencyName: "PEAKCOM - Commerce Growth Agency",
     defaultAgencyCommission: "15",
     autoConflictCheck: true,
     emailNotifications: true,
